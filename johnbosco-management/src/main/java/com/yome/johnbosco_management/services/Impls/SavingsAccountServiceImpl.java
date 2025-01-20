@@ -30,6 +30,7 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
     private final TransactionRepository transactionLogRepository;
     private final SavingsMapper savingsMapper;
 
+
     @Transactional
     public SavingsResponseDTO createAccount(Integer customerId) {
         Customer customer = customerRepository.findById(customerId)
@@ -47,8 +48,12 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
 
         savingsAccountRepository.save(account);
 
+        customer.setSavingsAccount(account);
+        customerRepository.save(customer);
+
         return savingsMapper.toResponseDTO(account);
     }
+
 
     private String generateUniqueAccountNumber() {
         String accountNumber;

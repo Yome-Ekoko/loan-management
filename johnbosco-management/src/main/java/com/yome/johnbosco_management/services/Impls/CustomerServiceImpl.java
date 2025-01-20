@@ -30,23 +30,22 @@ public class CustomerServiceImpl implements CustomerService {
     private final RoleRepository roleRepository;
 
     public CustomerResponseDTO createCustomer(CustomerRequestDTO customerDTO) {
-        if (userRepository.findByUsername(customerDTO.getEmail()).isPresent()) {
-            throw new RuntimeException("Email is already exists");
-        }
-       Role role= new Role(RoleType.CUSTOMER);
+        userRepository.findByUsername(customerDTO.getEmail())
+                .ifPresent(user -> { throw new RuntimeException("Email already exists"); });
+
+        Role role = new Role(RoleType.CUSTOMER);
         roleRepository.save(role);
+
         Users user = new Users();
         user.setUsername(customerDTO.getEmail());
-        user.setPassword(customerDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(customerDTO.getPassword())); // Encode password
         user.setRole(role);
-
         userRepository.save(user);
 
         Customer customer = customerMapper.toEntity(customerDTO);
         customer.setUser(user);
 
         Customer savedCustomer = customerRepository.save(customer);
-
 
         return customerMapper.toResponseDTO(savedCustomer);
     }

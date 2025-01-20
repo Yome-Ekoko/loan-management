@@ -25,6 +25,7 @@ public class LoanController {
             LoanResponseDTO loanResponseDTO = loanService.requestLoan(customerId, loanAmount);
             return new ResponseEntity<>(loanResponseDTO, HttpStatus.OK);
         } catch (RuntimeException e) {
+            System.err.println("Error: " + e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }

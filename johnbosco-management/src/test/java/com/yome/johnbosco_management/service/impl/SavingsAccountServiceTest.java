@@ -46,9 +46,6 @@ class SavingsAccountServiceTest {
         Customer customer = new Customer();
         customer.setId(customerId);
         customer.setName("Jane");
-        customer.setEmail("janedoe@gmail.com");
-        customer.setPassword("93ji3yued3i8ei");
-        customer.setRole(RoleType.CUSTOMER);
 
         SavingsAccount account = new SavingsAccount();
         account.setAccountNumber("93649369472");

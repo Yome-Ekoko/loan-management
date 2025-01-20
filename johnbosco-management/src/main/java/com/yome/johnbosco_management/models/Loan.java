@@ -1,5 +1,6 @@
 package com.yome.johnbosco_management.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.yome.johnbosco_management.enums.LoanRepaymentStatus;
 import com.yome.johnbosco_management.enums.LoanStatus;
 import jakarta.persistence.*;
@@ -25,7 +26,8 @@ public class Loan extends BaseEntity{
 
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
+    @JsonBackReference
     private Customer customer;
 }

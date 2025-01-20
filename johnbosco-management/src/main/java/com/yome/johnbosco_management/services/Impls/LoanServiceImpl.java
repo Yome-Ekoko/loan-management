@@ -40,8 +40,7 @@ public class LoanServiceImpl implements LoanService {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
 
-        boolean hasUnpaidLoan = loanRepository.existsByCustomerAndIsRepaidFalse(customer);
-        if (hasUnpaidLoan) {
+        if (loanRepository.existsByCustomerAndIsRepaidFalse(customer)) {
             throw new UnpaidLoanException("Customer has an unpaid loan");
         }
 
@@ -49,7 +48,7 @@ public class LoanServiceImpl implements LoanService {
         loan.setCustomer(customer);
         loan.setAmount(loanAmount);
         loan.setStatus(LoanStatus.PENDING);
-        loan.setRepaymentStatus(LoanRepaymentStatus.valueOf("IN_PROGRESS"));
+        loan.setRepaymentStatus(LoanRepaymentStatus.IN_PROGRESS);
 
         TransactionLog log = new TransactionLog();
         log.setCustomer(customer);
@@ -60,12 +59,13 @@ public class LoanServiceImpl implements LoanService {
         log.setCreatedAt(new Date());
         log.setSavingsAccount(customer.getSavingsAccount());
         log.setAccountNumber(customer.getSavingsAccount().getAccountNumber());
-        transactionLogRepository.save(log);
 
+        transactionLogRepository.save(log);
         Loan savedLoan = loanRepository.save(loan);
 
         return loanMapper.toResponseDTO(savedLoan);
     }
+
 
 
     public LoanResponseDTO approveLoan(Long loanId) {

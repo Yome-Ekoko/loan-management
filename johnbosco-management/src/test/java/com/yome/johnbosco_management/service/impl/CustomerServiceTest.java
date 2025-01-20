@@ -5,9 +5,10 @@ import com.yome.johnbosco_management.dtos.responses.CustomerResponseDTO;
 import com.yome.johnbosco_management.mappers.CustomerMapper;
 import com.yome.johnbosco_management.models.Customer;
 import com.yome.johnbosco_management.repositories.CustomerRepository;
+import com.yome.johnbosco_management.repositories.RoleRepository;
 import com.yome.johnbosco_management.repositories.UserRepository;
-import com.yome.johnbosco_management.services.CustomerService;
 import com.yome.johnbosco_management.services.Impls.CustomerServiceImpl;
+import com.yome.johnbosco_management.services.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -23,6 +24,7 @@ class CustomerServiceTest {
     private CustomerMapper customerMapper;
     private CustomerService customerService;
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
 
     @BeforeEach
     void setUp() {
@@ -30,8 +32,9 @@ class CustomerServiceTest {
         passwordEncoder = Mockito.mock(PasswordEncoder.class);
         customerMapper = Mockito.mock(CustomerMapper.class);
         userRepository = Mockito.mock(UserRepository.class);
+        roleRepository = Mockito.mock(RoleRepository.class); // Added RoleRepository mock
 
-        customerService = new CustomerServiceImpl(customerRepository, passwordEncoder, customerMapper, userRepository);
+        customerService = new CustomerServiceImpl(customerRepository, passwordEncoder, customerMapper, userRepository, roleRepository);
     }
 
     @Test
@@ -43,7 +46,6 @@ class CustomerServiceTest {
 
         Customer customer = new Customer();
         customer.setName("John Doe");
-        customer.setEmail("john.doe@example.com");
 
         CustomerResponseDTO customerResponse = new CustomerResponseDTO();
         customerResponse.setName("John Doe");
