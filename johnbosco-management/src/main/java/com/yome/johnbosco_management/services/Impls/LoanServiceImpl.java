@@ -151,6 +151,7 @@ public class LoanServiceImpl implements LoanService {
     @Scheduled(cron = "0 0 0 3 * ?")
     public void processLoanRepayments() {
         List<Loan> loans = loanRepository.findByStatusAndIsRepaidFalse(LoanStatus.APPROVED);
+        System.out.println("Task is running every 10 seconds!");
 
         for (Loan loan : loans) {
             if (loan.getStatus() == LoanStatus.APPROVED && !loan.isRepaid()) {
